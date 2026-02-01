@@ -1,5 +1,7 @@
 package org.bsc.langgraph4j.agent._01_basic.langgraph;
 
+import com.azure.core.annotation.Get;
+import lombok.Getter;
 import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.action.AsyncNodeAction;
 import org.bsc.langgraph4j.checkpoint.MemorySaver;
@@ -14,7 +16,12 @@ import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
 
 public class QAAssistant {
 
+
     private final CompiledGraph<QAState> graph;
+
+    @Getter
+    private final StateGraph<QAState> debugGraph;
+
     private RunnableConfig config;
     private final String threadId;
 
@@ -47,7 +54,7 @@ public class QAAssistant {
         });
 
         // defining nodes and edges
-        var graph = new StateGraph<>(QAState.SCHEMA, QAState::new)
+        debugGraph = new StateGraph<>(QAState.SCHEMA, QAState::new)
                 .addNode("ask_country", askCountry)
                 .addNode("wait_for_country", waitForCountry)
                 .addNode("ask_city", askCity)
@@ -60,7 +67,7 @@ public class QAAssistant {
                 .addEdge("wait_for_city", "show_weather")
                 .addEdge("show_weather", END);
 
-        System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "Agent Q&A", false).content());
+        System.out.println(debugGraph.getGraph(GraphRepresentation.Type.MERMAID, "Agent Q&A", false).content());
 
         // 3)   time-travel node state
         var compileConfig = CompileConfig.builder()
@@ -69,7 +76,7 @@ public class QAAssistant {
                 .releaseThread(true)
                 .build();
 
-        this.graph = graph.compile(compileConfig);
+        this.graph = debugGraph.compile(compileConfig);
         this.threadId = UUID.randomUUID().toString();
     }
 

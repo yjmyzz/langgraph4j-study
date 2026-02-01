@@ -75,13 +75,20 @@ src/test/java/org/bsc/langgraph4j/agent/
 # 控制台模式（默认）
 mvn spring-boot:run
 
-# 若需 Web 模式（Studio 等），可修改 application.yml 中 web-application-type
+# Studio Web 模式
+mvn spring-boot:run -Dspring.profiles.active=studio
 ```
 
 **REST 示例**（见 `_01_basic/test.http`）：
 
 - 首次请求不带 `sessionId`，获得 Agent 回复与 `sessionId`
 - 后续请求带同一 `sessionId`，按流程输入国家、城市等
+
+**Studio 模式**：
+
+- 启动命令：`mvn spring-boot:run -Dspring.profiles.active=studio`
+- 访问地址：`http://localhost:8080`
+- 功能：提供图形化界面来交互和调试 LangGraph 智能体
 
 ---
 
@@ -120,6 +127,14 @@ mvn spring-boot:run
 
 ---
 
+## 修复记录
+
+### 最近修复
+
+- **AgentPayment 修复**：修复了 `submitPayment` 方法中格式化字符串错误，将 `%d`（整数格式）改为 `%.2f`（浮点数格式）以正确处理 `double` 类型的价格参数，并确保使用传入的参数而非硬编码值。
+
+---
+
 ## 快速开始
 
 ### 环境要求
@@ -145,8 +160,12 @@ mvn clean package
 - **application.yml**  
   - `spring.main.web-application-type`：`none` 为控制台应用，`servlet` 为 Web 应用（如配合 Studio 或仅用 REST）。
 
+- **application-studio.yml**  
+  - 为LangGraph Studio提供的专用配置，启用Web功能
+
 - **依赖说明**  
   - `langgraph4j-core`、`langgraph4j-springai-agentexecutor`、`langgraph4j-agent-executor`：核心与 Spring AI 集成  
+  - `langgraph4j-studio-springboot`：LangGraph Studio Web界面支持  
   - `langchain4j`、`langchain4j-mcp`：Langchain4j 多 Agent 交接（_04）  
   - `spring-ai-ollama` / `spring-ai-openai`：仅在 test scope，用于 _03 多 Agent 交接测试  
   - `javelit`：仅在 test scope，用于 _03 的 Javelit 示例 App

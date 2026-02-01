@@ -75,8 +75,12 @@
             <scope>import</scope>
         </dependency>
 
-
-
+        <!--studio-->
+        <dependency>
+            <groupId>org.bsc.langgraph4j</groupId>
+            <artifactId>langgraph4j-studio-springboot</artifactId>
+            <version>1.8.0-beta5</version>
+        </dependency>
 
 
         <dependency>
@@ -105,6 +109,12 @@
             <artifactId>spring-ai-openai</artifactId>
             <version>${spring-ai.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
