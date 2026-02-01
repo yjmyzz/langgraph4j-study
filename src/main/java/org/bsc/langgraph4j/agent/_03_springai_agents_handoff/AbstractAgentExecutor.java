@@ -1,0 +1,90 @@
+package org.bsc.langgraph4j.agent._03_springai_agents_handoff;
+
+import org.bsc.langgraph4j.CompiledGraph;
+import org.bsc.langgraph4j.GraphStateException;
+import org.bsc.langgraph4j.serializer.StateSerializer;
+import org.bsc.langgraph4j.spring.ai.agent.ReactAgent;
+import org.bsc.langgraph4j.spring.ai.agentexecutor.AgentExecutor;
+import org.bsc.langgraph4j.spring.ai.serializer.jackson.SpringAIJacksonStateSerializer;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ToolContext;
+import org.springframework.ai.tool.ToolCallback;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
+
+public abstract class AbstractAgentExecutor<B extends AbstractAgent.Builder<B>> extends AbstractAgent<AbstractAgentExecutor.Request,String,B> {
+
+    public record Request( String input ) {};
+
+    public static abstract class Builder<B extends AbstractAgent.Builder<B>> extends AbstractAgent.Builder<B> {
+
+        final ReactAgent.Builder<AgentExecutor.State> agentExecutorBuilder = new ReactAgent.Builder<>();
+
+        protected Builder() {
+            // default state serializer
+            agentExecutorBuilder.stateSerializer( new SpringAIJacksonStateSerializer<>( AgentExecutor.State::new ) );
+        }
+
+        public B chatModel(ChatModel chatModel) {
+            agentExecutorBuilder.chatModel(chatModel);
+            return result();
+        }
+
+        public B tool(ToolCallback tool) {
+            agentExecutorBuilder.tool(tool);
+            return result();
+        }
+
+        public B tools(List<ToolCallback> tools) {
+            agentExecutorBuilder.tools(tools);
+            return result();
+        }
+
+        public B toolsFromObject(Object objectWithTools) {
+            agentExecutorBuilder.toolsFromObject(objectWithTools);
+            return result();
+        }
+
+        public B stateSerializer(StateSerializer<AgentExecutor.State> stateSerializer) {
+            this.agentExecutorBuilder.stateSerializer( requireNonNull(stateSerializer, "stateSerializer cannot be null!"));
+            return result();
+        }
+
+        public B defaultSystem(String systemMessage) {
+            this.agentExecutorBuilder.defaultSystem(systemMessage);
+            return result();
+        }
+
+
+    }
+
+    final CompiledGraph<AgentExecutor.State> agentExecutor;
+
+    protected AbstractAgentExecutor(Builder<B> builder) throws GraphStateException {
+        super(builder.inputType(Request.class));
+
+        agentExecutor = builder.agentExecutorBuilder
+                .build()
+                .compile();
+    }
+
+    @Override
+    public String apply(Request request, ToolContext toolContext) {
+
+        var userMessage = new UserMessage( request.input() );
+
+        var result = agentExecutor.invoke( Map.of( "messages", userMessage ) );
+
+        return result.flatMap(AgentExecutor.State::lastMessage)
+                .map(AssistantMessage.class::cast)
+                .map(AssistantMessage::getText)
+                .orElseThrow()
+                ;
+
+    }
+}
