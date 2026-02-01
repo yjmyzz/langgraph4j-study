@@ -1,6 +1,7 @@
 package org.bsc.langgraph4j.agent._03_springai_agents_handoff;
 
 
+import org.bsc.langgraph4j.GraphRepresentation;
 import org.bsc.langgraph4j.prebuilt.MessagesState;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -13,7 +14,7 @@ public class MultiAgentHandoffITest {
     @Test
     public void testHandoff() throws Exception {
 
-        String modelName = "minimax-m2:cloud";
+        String modelName = "glm-4.6:cloud";
 
         var agentMarketPlace = AgentMarketplace.builder()
                 .chatModel(AiModel.OLLAMA.chtModel(modelName))
@@ -23,6 +24,7 @@ public class MultiAgentHandoffITest {
                 .chatModel(AiModel.OLLAMA.chtModel(modelName))
                 .build();
 
+
         var handoffExecutor = AgentHandoff.builder()
                 .chatModel(AiModel.OLLAMA.chtModel(modelName))
                 .agent(agentMarketPlace)
@@ -30,7 +32,9 @@ public class MultiAgentHandoffITest {
                 .build()
                 .compile();
 
-        var input = "search for product 'X' and purchase it with IBAN US82WEST1234567890123456";
+        System.out.println(handoffExecutor.getGraph(GraphRepresentation.Type.MERMAID, "Agent Handoff", false).content());
+
+        var input = "搜索产品[华为X70手机]并购买";
 
         var result = handoffExecutor.invoke(Map.of("messages", new UserMessage(input)));
 

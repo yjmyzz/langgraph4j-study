@@ -13,21 +13,24 @@ public class AgentPayment extends AbstractAgentExecutor<AgentPayment.Builder> {
         record Transaction(
                 @JsonPropertyDescription("购买的产品名称") String product,
                 @JsonPropertyDescription("操作代码") String code
-        ) {}
+        ) {
+        }
 
-        @Tool(description="为购买特定产品提交支付")
+        @Tool(description = "提交支付信息")
         Transaction submitPayment(
-                @ToolParam( description="要购买的产品名称") String product,
-                @ToolParam( description="产品价格") double price,
-                @ToolParam( description="产品价格货币单位") String currency,
-                @ToolParam( description="国际银行账号 (IBAN)") String iban,
-                ToolContext toolContext ) {
-            return new Transaction( product,"123456789A" );
+                @ToolParam(description = "要购买的产品名称") String product,
+                @ToolParam(description = "产品价格") double price,
+                @ToolParam(description = "产品价格货币单位") String currency,
+                @ToolParam(description = "国际银行账号 (IBAN)") String iban,
+                ToolContext toolContext) {
+            System.out.printf("[工具调用] submitPayment=>%s %.2f %s, IBAN:%s %n%n", product, price, currency, iban);
+            return new Transaction(product, "123456789A");
 
         }
 
-        @Tool(description="获取IBAN信息")
-        String retrieveIBAN()  {
+        @Tool(description = "获取IBAN信息")
+        String retrieveIBAN() {
+            System.out.printf("[工具调用] retrieveIBAN=>IBAN:%s %n%n", "GB82WEST12345698765432");
             return """
                     GB82WEST12345698765432
                     """;
@@ -39,15 +42,15 @@ public class AgentPayment extends AbstractAgentExecutor<AgentPayment.Builder> {
 
         public AgentPayment build() throws GraphStateException {
             this.name("payment")
-                    .description("支付智能体，处理购买和支付交易请求")
-                    .parameterDescription("所有购买信息以便完成支付")
-                    .defaultSystem( """
-                你是提供支付服务的智能体。
-                """)
-                    .toolsFromObject( new Tools() )
+                    .description("支付AI助手，处理购买和支付交易请求")
+                    .parameterDescription("相关购买信息以便完成支付")
+                    .defaultSystem("""
+                            你是提供支付服务的AI助手。
+                            """)
+                    .toolsFromObject(new Tools())
             ;
 
-            return new AgentPayment( this );
+            return new AgentPayment(this);
         }
 
     }

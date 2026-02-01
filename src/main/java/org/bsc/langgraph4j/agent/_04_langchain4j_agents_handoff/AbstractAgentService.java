@@ -4,7 +4,6 @@ import dev.langchain4j.agent.tool.ToolExecutionRequest;
 import dev.langchain4j.agent.tool.ToolSpecification;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.tool.ToolExecutor;
 import dev.langchain4j.service.AiServices;
@@ -44,7 +43,7 @@ public abstract class AbstractAgentService<B extends AbstractAgentService.Builde
 
     interface Service {
 
-        String execute(@UserMessage String message, @MemoryId Object memoryId);
+        String execute(@UserMessage String message);
     }
 
     private final Service agentService;
@@ -58,7 +57,7 @@ public abstract class AbstractAgentService<B extends AbstractAgentService.Builde
     @Override
     public String execute(ToolExecutionRequest toolExecutionRequest, Object o) {
 
-        return agentService.execute( toolExecutionRequest.arguments(), o );
+        return agentService.execute( toolExecutionRequest.arguments() );
 
     }
 

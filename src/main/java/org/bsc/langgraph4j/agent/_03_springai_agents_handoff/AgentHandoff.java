@@ -9,6 +9,9 @@ import org.springframework.ai.chat.model.ChatModel;
 
 import java.util.Objects;
 
+/**
+ * @author junmingyang
+ */
 public interface AgentHandoff {
 
     class Builder {

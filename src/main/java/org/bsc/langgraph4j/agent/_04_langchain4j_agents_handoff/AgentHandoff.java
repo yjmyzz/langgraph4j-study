@@ -7,6 +7,9 @@ import org.bsc.langgraph4j.agentexecutor.AgentExecutor;
 
 import java.util.Objects;
 
+/**
+ * @author junmingyang
+ */
 public interface AgentHandoff {
 
    class Builder {

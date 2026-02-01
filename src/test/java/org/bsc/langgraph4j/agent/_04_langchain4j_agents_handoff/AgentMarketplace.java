@@ -4,35 +4,35 @@ import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.model.output.structured.Description;
-import org.bsc.langgraph4j.GraphStateException;
 
-
-public class AgentMarketplace extends AbstractAgentExecutor<AgentMarketplace.Builder> {
+public class AgentMarketplace extends AbstractAgentService<AgentMarketplace.Builder> {
 
     static class Tools {
         record Product(
                 @Description("产品名称") String name,
                 @Description("产品价格") double price,
-                @Description("产品价格货币单位") String currency) {}
+                @Description("产品价格货币单位") String currency) {
+        }
 
-        @Tool("在市场中搜索特定产品")
-        Product searchByProduct( @P("要搜索的产品名称") String product ) {
-            return new Product( "X", 1000, "EUR" );
+        @Tool("搜索特定产品")
+        Product searchByProduct(@P("要搜索的产品名称") String productName) {
+            System.out.printf("[工具调用] searchByProduct=>%s %d %s%n%n", productName, 1399, "元");
+            return new Product(productName, 1399D, "元");
         }
 
     }
-    public static class Builder extends AbstractAgentExecutor.Builder<Builder> {
 
+    public static class Builder extends AbstractAgentService.Builder<Builder> {
 
-        public AgentMarketplace build() throws GraphStateException {
+        public AgentMarketplace build() {
             this.name("marketplace")
-                    .description("产品AI助手，提供产品相关信息查询")
+                    .description("市场AI助手，提供产品相关信息查询")
                     .singleParameter("关于产品的所有信息请求")
-                    .systemMessage( SystemMessage.from("""
-                    你是提供产品市场信息的AI助手。
-                """) )
-                    .toolFromObject( new Tools() );
-            return new AgentMarketplace( this );
+                    .systemMessage(SystemMessage.from("""
+                                你是提供产品信息的AI助手。
+                            """))
+                    .toolFromObject(new Tools());
+            return new AgentMarketplace(this);
         }
 
     }
@@ -42,8 +42,8 @@ public class AgentMarketplace extends AbstractAgentExecutor<AgentMarketplace.Bui
     }
 
 
-    public AgentMarketplace( Builder builder ) throws GraphStateException {
-        super( builder );
+    public AgentMarketplace(Builder builder) {
+        super(builder);
     }
 
 }
