@@ -25,8 +25,6 @@ import static org.bsc.langgraph4j.utils.CollectionsUtils.mergeMap;
  */
 public interface AgenticWorkflowWithSubgraphInterruption {
 
-    org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AgenticWorkflowWithSubgraphInterruption.class);
-
     class SubGraphInterruptionException extends Exception {
         final String parentNodeId;
         final String nodeId;

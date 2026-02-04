@@ -1,10 +1,14 @@
 package org.bsc.langgraph4j.agent.studio;
 
 import lombok.SneakyThrows;
+import org.bsc.langgraph4j.StateGraph;
 import org.bsc.langgraph4j.agent._01_basic.langgraph.QAAssistant;
 import org.bsc.langgraph4j.agent._02_sub_interrupt.AgenticWorkflowWithSubgraphInterruption;
 import org.bsc.langgraph4j.agent._03_springai_agents_handoff.MultiAgentHandoffITest;
+import org.bsc.langgraph4j.agent._05_sequence.SequenceGraphApplication;
+import org.bsc.langgraph4j.agent._06_conditional.ConditionalGraphApplication;
 import org.bsc.langgraph4j.checkpoint.MemorySaver;
+import org.bsc.langgraph4j.state.AgentState;
 import org.bsc.langgraph4j.studio.LangGraphStudioServer;
 import org.bsc.langgraph4j.studio.springboot.LangGraphStudioConfig;
 import org.springframework.context.annotation.Configuration;
@@ -23,24 +27,18 @@ public class LangGraphStudioSampleConfig extends LangGraphStudioConfig {
                 .graph(new QAAssistant().getDebugGraph())
                 .build();
 
-        LangGraphStudioServer.Instance springaiAgentHandoff = LangGraphStudioServer.Instance.builder()
-                .title("spring-ai-Agent-Handoff")
-                .graph(new MultiAgentHandoffITest().createGraph())
-                .build();
-
-        LangGraphStudioServer.Instance subGraph = LangGraphStudioServer.Instance.builder()
-                .title("sub-graph-interruption")
-                .graph(AgenticWorkflowWithSubgraphInterruption.builder()
-                        .checkpointSaver(new MemorySaver())
-                        .createGraph())
-                .build();
 
         //说明：如果要运行特定的实例，可在url中指定，类似
-        //http://localhost:8080/?instance=subGraph
-
+        //http://localhost:8080/?instance=conditional
         return Map.of("default", qAInstance,
-                "springAiAgentHandoff", springaiAgentHandoff,
-                "subGraph", subGraph);
+                "conditional", LangGraphStudioServer.Instance.builder()
+                        .title("conditional graph")
+                        .graph(ConditionalGraphApplication.getConditionalGraph())
+                        .build(),
+                "sequence", LangGraphStudioServer.Instance.builder()
+                        .title("sequence graph")
+                        .graph(SequenceGraphApplication.getSequenceGraph())
+                        .build());
     }
 
 
