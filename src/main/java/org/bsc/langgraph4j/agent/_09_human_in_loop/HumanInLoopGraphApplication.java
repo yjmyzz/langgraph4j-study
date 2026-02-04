@@ -1,10 +1,9 @@
-package org.bsc.langgraph4j.agent._08_human_in_loop._08_loop;
+package org.bsc.langgraph4j.agent._09_human_in_loop;
 
 import org.bsc.langgraph4j.GraphDefinition;
 import org.bsc.langgraph4j.GraphRepresentation;
 import org.bsc.langgraph4j.GraphStateException;
 import org.bsc.langgraph4j.StateGraph;
-import org.bsc.langgraph4j.action.AsyncEdgeAction;
 import org.bsc.langgraph4j.state.AgentState;
 
 import java.util.Map;

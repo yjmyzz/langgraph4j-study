@@ -1,6 +1,6 @@
 # Langgraph4j Agent 示例项目
 
-基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
+基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Schema Channel 两步运算、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
 
 ## 技术栈
 
@@ -60,10 +60,14 @@ src/main/java/org/bsc/langgraph4j/agent/
 │   ├── LoopGraphApplication.java
 │   ├── Node1Action.java
 │   └── Node2Action.java
-└── _08_human_in_loop/_08_loop/   # 人机循环（控制台 C/Q 决定继续或结束）
-    ├── HumanInLoopGraphApplication.java
-    ├── Node1Action.java
-    └── Node2Action.java
+├── _09_human_in_loop/            # 人机循环（控制台 C/Q 决定继续或结束）
+│   ├── HumanInLoopGraphApplication.java
+│   ├── Node1Action.java
+│   └── Node2Action.java
+└── _10_schema_channel/           # Schema Channel：两步运算、步骤间结果串联
+    ├── TwoIntCalculateGraphApplication.java
+    ├── TwoIntCalculateState.java
+    └── TwoIntCalculateAction.java
 
 src/test/java/org/bsc/langgraph4j/agent/
 ├── _03_springai_agents_handoff/  # Spring AI 交接示例与测试
@@ -186,7 +190,7 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 
 ---
 
-### 9. 人机循环（`_08_human_in_loop/_08_loop`）
+### 9. 人机循环（`_09_human_in_loop`）
 
 演示**人机协作循环**：流程与 _08_loop 类似，但在 node-1 执行完后由**控制台人工输入**决定下一步：
 
@@ -196,6 +200,16 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 需在带控制台的环境运行（如 IDE 或终端），使用共享 `Scanner` 读取 `System.in`，避免关闭标准输入导致后续 `No line found`。
 
 - **入口**：`HumanInLoopGraphApplication#main`
+
+---
+
+### 10. Schema Channel 两步运算（`_10_schema_channel`）
+
+演示基于 **Schema / Channel** 的状态设计：固定流程为两步运算（先 op1，再 op2），**第二步的 num1 由第一步的计算结果自动填入**，实现节点间结果串联。
+
+- **状态**：`TwoIntCalculateState` 定义两槽位（op1、op2）的 num1/num2/operator 及 result_1、result_2；支持在 invoke 前一次性传入所有参数（第一步完整入参，第二步仅需 num2 与 operator）。
+- **节点**：`TwoIntCalculateAction` 通用四则运算，通过 `inputPrefix`、`resultKey` 绑定槽位；可选 `forwardResultToKey` 将本步结果写入下一节点输入（如将 result_1 写入 op2_num1）。
+- **入口**：`TwoIntCalculateGraphApplication#main`（示例：第一步 3*6，第二步结果/2，即 18/2=9）。
 
 ---
 
@@ -227,13 +241,14 @@ mvn spring-boot:run
 mvn clean package
 ```
 
-**独立图示例（_05～_09）**：在 IDE 中直接运行对应主类的 `main` 方法即可，例如：
+**独立图示例（_05～_10）**：在 IDE 中直接运行对应主类的 `main` 方法即可，例如：
 
 - 顺序图：`SequenceGraphApplication`
 - 条件图：`ConditionalGraphApplication`
 - 并行图：`ParallelGraphApplication`
 - 循环图：`LoopGraphApplication`
 - 人机循环：`HumanInLoopGraphApplication`（需在带控制台环境运行，输入 C/Q）
+- Schema Channel 两步运算：`TwoIntCalculateGraphApplication`
 
 ### 配置说明
 

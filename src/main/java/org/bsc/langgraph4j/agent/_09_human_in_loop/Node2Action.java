@@ -1,4 +1,4 @@
-package org.bsc.langgraph4j.agent._08_human_in_loop._08_loop;
+package org.bsc.langgraph4j.agent._09_human_in_loop;
 
 import org.bsc.langgraph4j.action.NodeAction;
 import org.bsc.langgraph4j.state.AgentState;
