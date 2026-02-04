@@ -7,6 +7,7 @@ import org.bsc.langgraph4j.agent._02_sub_interrupt.AgenticWorkflowWithSubgraphIn
 import org.bsc.langgraph4j.agent._03_springai_agents_handoff.MultiAgentHandoffITest;
 import org.bsc.langgraph4j.agent._05_sequence.SequenceGraphApplication;
 import org.bsc.langgraph4j.agent._06_conditional.ConditionalGraphApplication;
+import org.bsc.langgraph4j.agent._07_parallel.ParallelGraphApplication;
 import org.bsc.langgraph4j.checkpoint.MemorySaver;
 import org.bsc.langgraph4j.state.AgentState;
 import org.bsc.langgraph4j.studio.LangGraphStudioServer;
@@ -38,6 +39,10 @@ public class LangGraphStudioSampleConfig extends LangGraphStudioConfig {
                 "sequence", LangGraphStudioServer.Instance.builder()
                         .title("sequence graph")
                         .graph(SequenceGraphApplication.getSequenceGraph())
+                        .build(),
+                "parallel", LangGraphStudioServer.Instance.builder()
+                        .title("parallel graph")
+                        .graph(ParallelGraphApplication.getParallelGraph())
                         .build());
     }
 

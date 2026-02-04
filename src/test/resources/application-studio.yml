@@ -1,0 +1,14 @@
+spring:
+  main:
+    # Studio需要Web功能
+    web-application-type: servlet
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    org.bsc.langgraph4j: DEBUG
+    org.springframework: INFO
