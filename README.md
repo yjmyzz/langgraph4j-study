@@ -1,6 +1,6 @@
 # Langgraph4j Agent 示例项目
 
-基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖问答 Agent、子图中断、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
+基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
 
 ## 技术栈
 
@@ -36,12 +36,34 @@ src/main/java/org/bsc/langgraph4j/agent/
 │   ├── AbstractAgentExecutor.java
 │   ├── AgentHandoff.java
 │   └── README.md
-└── _04_langchain4j_agents_handoff/  # Langchain4j 多 Agent 交接
-    ├── AbstractAgent.java
-    ├── AbstractAgentExecutor.java
-    ├── AbstractAgentService.java
-    ├── AgentHandoff.java
-    └── （示例 Agent 与测试见 src/test/.../_04_langchain4j_agents_handoff/）
+├── _04_langchain4j_agents_handoff/  # Langchain4j 多 Agent 交接
+│   ├── AbstractAgent.java
+│   ├── AbstractAgentExecutor.java
+│   ├── AbstractAgentService.java
+│   └── AgentHandoff.java
+├── _05_sequence/                # 顺序图
+│   ├── SequenceGraphApplication.java
+│   ├── Node1Action.java
+│   └── Node2Action.java
+├── _06_conditional/              # 条件分支图
+│   ├── ConditionalGraphApplication.java
+│   ├── Node1Action.java
+│   ├── Node2Action.java
+│   ├── Node3Action.java
+│   └── RoutingEdgeAction.java
+├── _07_parallel/                 # 并行图
+│   ├── ParallelGraphApplication.java
+│   ├── Node1Action.java
+│   ├── Node2Action.java
+│   └── Node3Action.java
+├── _08_loop/                     # 循环图（固定次数退出）
+│   ├── LoopGraphApplication.java
+│   ├── Node1Action.java
+│   └── Node2Action.java
+└── _08_human_in_loop/_08_loop/   # 人机循环（控制台 C/Q 决定继续或结束）
+    ├── HumanInLoopGraphApplication.java
+    ├── Node1Action.java
+    └── Node2Action.java
 
 src/test/java/org/bsc/langgraph4j/agent/
 ├── _03_springai_agents_handoff/  # Spring AI 交接示例与测试
@@ -52,10 +74,13 @@ src/test/java/org/bsc/langgraph4j/agent/
 │   ├── MultiAgentHandoffITest.java   # 集成测试
 │   ├── MultiAgentHandoffITest_sequence_diagram.md   # 时序图与流程图
 │   └── *.png                     # 导出的序列图/流程图
-└── _04_langchain4j_agents_handoff/
-    ├── AgentMarketplace.java
-    ├── AgentPayment.java
-    └── MultiAgentHandoffITest.java
+├── _04_langchain4j_agents_handoff/
+│   ├── AgentMarketplace.java
+│   ├── AgentPayment.java
+│   └── MultiAgentHandoffITest.java
+└── studio/                       # LangGraph Studio 示例配置
+    ├── LangGraphStudioApplication.java
+    └── LangGraphStudioSampleConfig.java
 ```
 
 ## 模块说明
@@ -127,6 +152,53 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 
 ---
 
+### 5. 顺序图（`_05_sequence`）
+
+演示 Langgraph4j 最基础的**顺序执行**图：`START → node-1 → node-2 → END`。用于理解节点与边的构建、Mermaid 图导出以及图的执行与状态输出。
+
+- **入口**：`SequenceGraphApplication#main`
+
+---
+
+### 6. 条件分支图（`_06_conditional`）
+
+演示**条件边（Conditional Edges）**：从 node-1 根据状态（如 `routeTo`）动态路由到 node-2 或 node-3，再汇聚到 END。支持默认路由与 Mermaid 可视化。
+
+- **入口**：`ConditionalGraphApplication#main`
+- **路由逻辑**：`RoutingEdgeAction` 根据 state 返回目标节点标识
+
+---
+
+### 7. 并行图（`_07_parallel`）
+
+演示**并行分支**：node-1 执行完成后，node-2 与 node-3 并行执行，再分别到 END。用于理解多分支并行执行。
+
+- **入口**：`ParallelGraphApplication#main`
+- **图结构**：`START → node-1 → [node-2, node-3] → END`
+
+---
+
+### 8. 循环图（`_08_loop`）
+
+演示**固定次数循环**：`START → node-1 → (条件) → node-2 → node-1 → … → END`。通过状态中的 `loopCount` 与 `MAX_LOOP_ITERATIONS=3` 控制，循环 3 次后自动退出到 END。
+
+- **入口**：`LoopGraphApplication#main`
+
+---
+
+### 9. 人机循环（`_08_human_in_loop/_08_loop`）
+
+演示**人机协作循环**：流程与 _08_loop 类似，但在 node-1 执行完后由**控制台人工输入**决定下一步：
+
+- **C (Continue)**：进入 node-2，再回到 node-1，继续循环
+- **Q (Quit)**：直接到 END，结束图
+
+需在带控制台的环境运行（如 IDE 或终端），使用共享 `Scanner` 读取 `System.in`，避免关闭标准输入导致后续 `No line found`。
+
+- **入口**：`HumanInLoopGraphApplication#main`
+
+---
+
 ## 修复记录
 
 ### 最近修复
@@ -154,6 +226,14 @@ mvn spring-boot:run
 # 打包
 mvn clean package
 ```
+
+**独立图示例（_05～_09）**：在 IDE 中直接运行对应主类的 `main` 方法即可，例如：
+
+- 顺序图：`SequenceGraphApplication`
+- 条件图：`ConditionalGraphApplication`
+- 并行图：`ParallelGraphApplication`
+- 循环图：`LoopGraphApplication`
+- 人机循环：`HumanInLoopGraphApplication`（需在带控制台环境运行，输入 C/Q）
 
 ### 配置说明
 

@@ -13,11 +13,22 @@ import static org.bsc.langgraph4j.GraphDefinition.START;
 import static org.bsc.langgraph4j.action.AsyncEdgeAction.edge_async;
 import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
 
+
+
 /**
- * 条件图示例：start -> node-1 -> 根据 node-1 写回的 nextNode 分支到 node-2 / node-3 / node-4 -> END。
- * 可通过初始状态 "routeTo"（"node-2"|"node-3"|"node-4"）指定分支，未指定时默认走 node-2。
- *
- * @author junmingyang
+ * 条件图应用类
+ * 
+ * 该类演示了如何使用LangGraph4j构建带有条件边的图结构。
+ * 图中包含一个起始节点node-1，根据条件判断路由到node-2或node-3，
+ * 最终都汇聚到结束节点。
+ * 
+ * 主要特性：
+ * - 使用条件边实现动态路由
+ * - 支持默认路由目标
+ * - 展示了图的Mermaid可视化表示
+ * 
+ * @author 菩提树下的杨过(yjmyzz.cnblogs.com)
+ * @since 1.0
  */
 public class ConditionalGraphApplication {
 

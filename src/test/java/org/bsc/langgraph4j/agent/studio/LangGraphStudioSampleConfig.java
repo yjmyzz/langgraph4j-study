@@ -8,6 +8,8 @@ import org.bsc.langgraph4j.agent._03_springai_agents_handoff.MultiAgentHandoffIT
 import org.bsc.langgraph4j.agent._05_sequence.SequenceGraphApplication;
 import org.bsc.langgraph4j.agent._06_conditional.ConditionalGraphApplication;
 import org.bsc.langgraph4j.agent._07_parallel.ParallelGraphApplication;
+import org.bsc.langgraph4j.agent._08_loop.LoopGraphApplication;
+import org.bsc.langgraph4j.agent._08_human_in_loop._08_loop.HumanInLoopGraphApplication;
 import org.bsc.langgraph4j.checkpoint.MemorySaver;
 import org.bsc.langgraph4j.state.AgentState;
 import org.bsc.langgraph4j.studio.LangGraphStudioServer;
@@ -43,6 +45,14 @@ public class LangGraphStudioSampleConfig extends LangGraphStudioConfig {
                 "parallel", LangGraphStudioServer.Instance.builder()
                         .title("parallel graph")
                         .graph(ParallelGraphApplication.getParallelGraph())
+                        .build(),
+                "loop", LangGraphStudioServer.Instance.builder()
+                        .title("loop graph")
+                        .graph(LoopGraphApplication.getLoopGraph())
+                        .build(),
+                "human_in_loop", LangGraphStudioServer.Instance.builder()
+                        .title("human in loop graph")
+                        .graph(HumanInLoopGraphApplication.getLoopGraph())
                         .build());
     }
 

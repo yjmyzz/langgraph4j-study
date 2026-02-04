@@ -10,6 +10,19 @@ import java.util.Map;
 
 import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
 
+/**
+ * SequenceGraphApplication 类演示了如何使用 LangGraph4j 构建和执行一个简单的序列图。
+ * 该应用程序创建了一个包含两个节点的序列图，节点按顺序执行：
+ * START -> node-1 -> node-2 -> END
+ * 
+ * 主要功能包括：
+ * 1. 构建序列图结构
+ * 2. 生成图的 Mermaid 表示
+ * 3. 执行图并输出结果
+ * 
+ * @author 菩提树下的杨过(yjmyzz.cnblogs.com)
+ * @since 1.0
+ */
 public class SequenceGraphApplication {
 
     public static void main(String[] args) throws GraphStateException {

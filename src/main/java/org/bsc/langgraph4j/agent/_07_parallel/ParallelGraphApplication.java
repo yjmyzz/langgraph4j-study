@@ -13,12 +13,25 @@ import static org.bsc.langgraph4j.GraphDefinition.START;
 import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
 
 
+/**
+ * 并行图应用示例
+ * <p>
+ * 本类演示了如何构建和执行一个具有并行分支的图结构。
+ * 图中包含三个节点：node-1、node-2 和 node-3，
+ * 其中 node-2 和 node-3 在 node-1 执行完成后并行执行。
+ * <p>
+ * 图结构：
+ * START -> node-1 -> node-2 -> END
+ * |
+ * v
+ * node-3 -> END
+ *
+ * @author 菩提树下的杨过(yjmyzz.cnblogs.com)
+ */
 public class ParallelGraphApplication {
 
 
     public static void main(String[] args) throws GraphStateException {
-
-
         StateGraph<AgentState> conditionalGraph = getParallelGraph();
 
         System.out.println(conditionalGraph.getGraph(GraphRepresentation.Type.MERMAID, "parallel Graph", false).content());
