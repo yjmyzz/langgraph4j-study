@@ -1,6 +1,6 @@
 # Langgraph4j Agent 示例项目
 
-基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Schema Channel 两步运算、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
+基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Schema Channel 两步运算、**图执行 Hook（Node/Edge）**、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
 
 ## 技术栈
 
@@ -8,7 +8,7 @@
 |------|------|
 | Java | 21+ |
 | Spring Boot | 3.4.5 |
-| Langgraph4j | 1.8.0-beta1 |
+| Langgraph4j | 1.8.1 |
 | Spring AI | 1.1.0 |
 | Langchain4j | 1.10.0 |
 
@@ -64,10 +64,14 @@ src/main/java/org/bsc/langgraph4j/agent/
 │   ├── HumanInLoopGraphApplication.java
 │   ├── Node1Action.java
 │   └── Node2Action.java
-└── _10_schema_channel/           # Schema Channel：两步运算、步骤间结果串联
-    ├── TwoIntCalculateGraphApplication.java
-    ├── TwoIntCalculateState.java
-    └── TwoIntCalculateAction.java
+├── _10_schema_channel/           # Schema Channel：两步运算、步骤间结果串联
+│   ├── TwoIntCalculateGraphApplication.java
+│   ├── TwoIntCalculateState.java
+│   └── TwoIntCalculateAction.java
+└── _11_hook/                     # 图执行 Hook（Node / Edge）
+    ├── HookSampleApplication.java   # Node Hook 与 Edge Hook 触发时机演示
+    ├── Node1Action.java
+    └── Node2Action.java
 
 src/test/java/org/bsc/langgraph4j/agent/
 ├── _03_springai_agents_handoff/  # Spring AI 交接示例与测试
@@ -213,6 +217,21 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 
 ---
 
+### 11. 图执行 Hook（`_11_hook`）
+
+演示 **Node Hook** 与 **Edge Hook** 的注册与触发时机。
+
+- **Node Hook**（`addBeforeCallNodeHook` / `addAfterCallNodeHook` / `addWrapCallNodeHook`）：在**节点执行**前后或包裹节点执行时触发，任意图都会触发。
+- **Edge Hook**（`addBeforeCallEdgeHook` / `addAfterCallEdgeHook` / `addWrapCallEdgeHook`）：仅在**条件边被求值**时触发。  
+  - **静态边** `addEdge(A, B)` 只是图上连线，运行时不会“调用”边逻辑，因此**不会**触发 Edge Hook。  
+  - **条件边** `addConditionalEdges(source, edgeAction, map)` 在运行时会执行 `edgeAction` 以决定下一节点，此时**会**触发 Edge Hook。
+
+示例中先跑纯静态边图（仅 Node Hook 有输出），再跑带条件边的图（Node + Edge Hook 均有输出）。
+
+- **入口**：`HookSampleApplication#main`
+
+---
+
 ## 修复记录
 
 ### 最近修复
@@ -241,7 +260,7 @@ mvn spring-boot:run
 mvn clean package
 ```
 
-**独立图示例（_05～_10）**：在 IDE 中直接运行对应主类的 `main` 方法即可，例如：
+**独立图示例（_05～_11）**：在 IDE 中直接运行对应主类的 `main` 方法即可，例如：
 
 - 顺序图：`SequenceGraphApplication`
 - 条件图：`ConditionalGraphApplication`
@@ -249,6 +268,7 @@ mvn clean package
 - 循环图：`LoopGraphApplication`
 - 人机循环：`HumanInLoopGraphApplication`（需在带控制台环境运行，输入 C/Q）
 - Schema Channel 两步运算：`TwoIntCalculateGraphApplication`
+- 图执行 Hook：`HookSampleApplication`（演示 Node/Edge Hook 触发时机，含静态边与条件边两段）
 
 ### 配置说明
 
@@ -271,8 +291,7 @@ mvn clean package
 如有问题，请通过以下方式联系：
 
 - 提交GitHub Issue
-- 作者博客: http://yjmyzz.cnblogs.com
-- 作者: 菩提树下的杨过
+- 作者: [菩提树下的杨过](http://yjmyzz.cnblogs.com)
 
 ## 文档与参考
 
@@ -280,6 +299,7 @@ mvn clean package
 - [_03 Spring AI Agents Handoff](src/main/java/org/bsc/langgraph4j/agent/_03_springai_agents_handoff/README.md)
 - [_03 多 Agent 交接时序图与流程图](src/test/java/org/bsc/langgraph4j/agent/_03_springai_agents_handoff/MultiAgentHandoffITest_sequence_diagram.md)
 - [Langgraph4j](https://github.com/bsorrentino/langgraph4j)
+- [langgraph4j deepwiki](https://deepwiki.com/langgraph4j/langgraph4j)
 - [Spring AI](https://docs.spring.io/spring-ai/reference/)
 - [Langchain4j](https://github.com/langchain4j/langchain4j)
 

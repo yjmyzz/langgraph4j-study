@@ -37,7 +37,7 @@ public class LoopGraphApplication {
     public static void main(String[] args) throws GraphStateException {
         StateGraph<AgentState> sequenceGraph = getLoopGraph();
 
-        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "loop Graph", false).content());
+        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "loop Graph", true).content());
 
         sequenceGraph.compile().invoke(Map.of("loopCount", 0L)).ifPresent(c -> {
             System.out.println(c.data());

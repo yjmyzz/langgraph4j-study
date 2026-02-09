@@ -39,7 +39,7 @@ public class HumanInLoopGraphApplication {
     public static void main(String[] args) throws GraphStateException {
         StateGraph<AgentState> sequenceGraph = getLoopGraph();
 
-        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "human-in-loop Graph", false).content());
+        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "human-in-loop Graph", true).content());
 
         sequenceGraph.compile().invoke(Map.of()).ifPresent(c -> {
             System.out.println(c.data());

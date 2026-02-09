@@ -9,6 +9,7 @@ public class Node3Action implements NodeAction<AgentState> {
     @Override
     public Map<String, Object> apply(AgentState state) throws Exception {
         System.out.println("current Node: node-3");
+        Thread.sleep(1000);
         return Map.of("myData", "node3-my-value",
                 "node3Key", "node3-value");
     }

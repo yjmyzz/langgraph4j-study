@@ -1,7 +1,6 @@
 package org.bsc.langgraph4j.agent._01_basic.langgraph;
 
 import com.azure.core.annotation.Get;
-import lombok.Getter;
 import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.action.AsyncNodeAction;
 import org.bsc.langgraph4j.checkpoint.MemorySaver;
@@ -19,8 +18,14 @@ public class QAAssistant {
 
     private final CompiledGraph<QAState> graph;
 
-    @Getter
     private final StateGraph<QAState> debugGraph;
+
+    /**
+     * 返回用于调试/可视化的图定义，供 LangGraph Studio 等工具使用。
+     */
+    public StateGraph<QAState> getDebugGraph() {
+        return debugGraph;
+    }
 
     private RunnableConfig config;
     private final String threadId;

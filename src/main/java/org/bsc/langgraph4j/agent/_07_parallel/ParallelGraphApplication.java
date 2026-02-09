@@ -1,13 +1,13 @@
 package org.bsc.langgraph4j.agent._07_parallel;
 
-import org.bsc.langgraph4j.GraphDefinition;
-import org.bsc.langgraph4j.GraphRepresentation;
-import org.bsc.langgraph4j.GraphStateException;
-import org.bsc.langgraph4j.StateGraph;
+import org.apache.logging.log4j.util.Strings;
+import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.state.AgentState;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.bsc.langgraph4j.GraphDefinition.START;
 import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
@@ -32,12 +32,35 @@ public class ParallelGraphApplication {
 
 
     public static void main(String[] args) throws GraphStateException {
-        StateGraph<AgentState> conditionalGraph = getParallelGraph();
+        StateGraph<AgentState> conditionalGraph1 = getParallelGraph();
 
-        System.out.println(conditionalGraph.getGraph(GraphRepresentation.Type.MERMAID, "parallel Graph", false).content());
+        System.out.println(conditionalGraph1.getGraph(GraphRepresentation.Type.MERMAID, "parallel Graph", true).content());
 
+        long start = System.currentTimeMillis();
         try {
-            conditionalGraph.compile()
+            RunnableConfig rc = RunnableConfig.builder()
+                    .addParallelNodeExecutor("node-1", Executors.newFixedThreadPool(4))
+                    .build();
+            conditionalGraph1.compile()
+                    .invoke(Map.of("test", "test-init-value"), rc)
+                    .ifPresent(c -> System.out.println(c.data()));
+        } catch (GraphStateException e) {
+            System.err.println("Graph execution failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            throw new RuntimeException(e);
+        } finally {
+            long end = System.currentTimeMillis();
+            System.out.println((end - start) + "ms");
+        }
+
+        System.out.println(Strings.repeat("=", 50));
+
+        StateGraph<AgentState> conditionalGraph2 = getParallelGraph();
+        start = System.currentTimeMillis();
+        try {
+            conditionalGraph2.compile()
                     .invoke(Map.of("test", "test-init-value"))
                     .ifPresent(c -> System.out.println(c.data()));
         } catch (GraphStateException e) {
@@ -46,6 +69,9 @@ public class ParallelGraphApplication {
         } catch (Exception e) {
             System.err.println("Unexpected error: " + e.getMessage());
             throw new RuntimeException(e);
+        } finally {
+            long end = System.currentTimeMillis();
+            System.out.println((end - start) + "ms");
         }
     }
 

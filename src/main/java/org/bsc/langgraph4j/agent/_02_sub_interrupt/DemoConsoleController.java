@@ -46,7 +46,7 @@ public class DemoConsoleController implements CommandLineRunner {
                             .checkpointSaver(saver)
                             .build();
         
-        String graphContent = workflow.getGraph( GraphRepresentation.Type.MERMAID, "Manage SubGraph Interruption", false).content();
+        String graphContent = workflow.getGraph( GraphRepresentation.Type.MERMAID, "Manage SubGraph Interruption", true).content();
         if (console != null) {
             console.printf( "\n%s\n", graphContent);
         } else {

@@ -22,7 +22,7 @@
     <description><![CDATA[Langgraph4j Question & Answer Agent example]]></description>
 
     <properties>
-        <langgraph4j.version>1.8.0-beta1</langgraph4j.version>
+        <langgraph4j.version>1.8.1</langgraph4j.version>
         <langchain4j.version>1.10.0</langchain4j.version>
         <spring-ai.version>1.1.0</spring-ai.version>
     </properties>
@@ -114,7 +114,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <version>1.18.42</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

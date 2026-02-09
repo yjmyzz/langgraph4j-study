@@ -31,7 +31,7 @@ public class TwoIntCalculateGraphApplication {
     public static void main(String[] args) throws GraphStateException {
         StateGraph<TwoIntCalculateState> graph = getSequenceGraph();
 
-        System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "Two Int Calculate Graph", false).content());
+        System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "Two Int Calculate Graph", true).content());
 
         Map<String, Object> initState = Map.of(
                 TwoIntCalculateState.OP1_PREFIX + "_num1", 3, TwoIntCalculateState.OP1_PREFIX + "_num2", 6, TwoIntCalculateState.OP1_PREFIX + "_operator", "+",

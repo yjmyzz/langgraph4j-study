@@ -40,7 +40,7 @@ public class ConditionalGraphApplication {
 
         StateGraph<AgentState> conditionalGraph = getConditionalGraph();
 
-        System.out.println(conditionalGraph.getGraph(GraphRepresentation.Type.MERMAID, "conditional Graph", false).content());
+        System.out.println(conditionalGraph.getGraph(GraphRepresentation.Type.MERMAID, "conditional Graph", true).content());
 
         try {
             conditionalGraph.compile()

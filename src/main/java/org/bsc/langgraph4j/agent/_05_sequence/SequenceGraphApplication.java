@@ -28,7 +28,7 @@ public class SequenceGraphApplication {
     public static void main(String[] args) throws GraphStateException {
         StateGraph<AgentState> sequenceGraph = getSequenceGraph();
 
-        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "Sequence Graph", false).content());
+        System.out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "Sequence Graph", true).content());
 
         sequenceGraph.compile().invoke(Map.of("test", "test-init-value")).ifPresent(c -> {
             System.out.println(c.data());
