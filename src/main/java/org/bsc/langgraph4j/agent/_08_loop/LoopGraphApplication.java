@@ -53,6 +53,7 @@ public class LoopGraphApplication {
                 .addNode("node-2", node_async(new Node2Action()))
                 .addEdge(GraphDefinition.START, "node-1")
                 .addEdge("node-2", "node-1")
+                //循环的跳出条件比较简单，3次后退出，这里就不单独定义EdgeAction类了，用lambda表达式
                 .addConditionalEdges("node-1", state -> {
                     long count = getLoopCount(state);
                     System.out.println("loop Count: " + count);

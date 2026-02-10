@@ -1,0 +1,272 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for org.springframework.boot:langgraph4j-agent-qa:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.scope' for org.springframework.ai:spring-ai-bom:pom must be one of [provided, compile, runtime, test, system] but is 'import'. @ line 69, column 20
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] -----------< org.springframework.boot:langgraph4j-agent-qa >------------
+[INFO] Building langgraph4j::examples::agent-q&a 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ langgraph4j-agent-qa ---
+[INFO] org.springframework.boot:langgraph4j-agent-qa:jar:0.0.1-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:3.4.5:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:3.4.5:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:3.4.5:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:3.4.5:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:3.4.5:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.5.18:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.5.18:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.24.3:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.24.3:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:2.0.17:compile
+[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:6.2.6:compile
+[INFO] |  |  |  \- org.springframework:spring-jcl:jar:6.2.6:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:2.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:3.4.5:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.18.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.18.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:3.4.5:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:10.1.40:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:10.1.40:compile
+[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:10.1.40:compile
+[INFO] |  +- org.springframework:spring-web:jar:6.2.6:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:6.2.6:compile
+[INFO] |  |  \- io.micrometer:micrometer-observation:jar:1.14.6:compile
+[INFO] |  |     \- io.micrometer:micrometer-commons:jar:1.14.6:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:6.2.6:compile
+[INFO] |     +- org.springframework:spring-aop:jar:6.2.6:compile
+[INFO] |     +- org.springframework:spring-context:jar:6.2.6:compile
+[INFO] |     \- org.springframework:spring-expression:jar:6.2.6:compile
+[INFO] +- org.bsc.langgraph4j:langgraph4j-core:jar:1.8.1:compile
+[INFO] |  +- org.bsc.async:async-generator:jar:4.0.0:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:2.0.17:compile
+[INFO] +- org.bsc.langgraph4j:langgraph4j-springai-agentexecutor:jar:1.8.1:compile
+[INFO] |  +- org.bsc.langgraph4j:langgraph4j-spring-ai:jar:1.8.1:compile
+[INFO] |  |  +- org.springframework.ai:spring-ai-commons:jar:1.1.0:compile
+[INFO] |  |  |  +- io.micrometer:micrometer-core:jar:1.14.6:compile
+[INFO] |  |  |  |  +- org.hdrhistogram:HdrHistogram:jar:2.2.2:runtime
+[INFO] |  |  |  |  \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  |  |  +- io.micrometer:context-propagation:jar:1.1.3:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jsonSchema:jar:2.18.3:compile
+[INFO] |  |  |     \- javax.validation:validation-api:jar:1.1.0.Final:compile
+[INFO] |  |  \- org.springframework.ai:spring-ai-client-chat:jar:1.1.0:compile
+[INFO] |  |     \- io.modelcontextprotocol.sdk:mcp-json-jackson2:jar:0.16.0:compile
+[INFO] |  |        +- io.modelcontextprotocol.sdk:mcp-json:jar:0.16.0:compile
+[INFO] |  |        \- com.networknt:json-schema-validator:jar:2.0.0:compile
+[INFO] |  |           +- com.ethlo.time:itu:jar:1.14.0:compile
+[INFO] |  |           \- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.18.3:compile
+[INFO] |  \- org.springaicommunity:spring-ai-agent-utils:jar:0.4.1:compile
+[INFO] |     \- com.vladsch.flexmark:flexmark-html2md-converter:jar:0.64.8:compile
+[INFO] +- org.bsc.langgraph4j:langgraph4j-agent-executor:jar:1.8.1:compile
+[INFO] |  +- org.bsc.langgraph4j:langgraph4j-langchain4j:jar:1.8.1:compile
+[INFO] |  +- dev.langchain4j:langchain4j-open-ai:jar:1.11.0:compile
+[INFO] |  |  \- com.knuddels:jtokkit:jar:1.1.0:compile
+[INFO] |  +- dev.langchain4j:langchain4j-azure-open-ai:jar:1.11.0:compile
+[INFO] |  |  +- com.azure:azure-ai-openai:jar:1.0.0-beta.16:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.55.3:compile
+[INFO] |  |  |  |  +- com.azure:azure-json:jar:1.5.0:compile
+[INFO] |  |  |  |  \- com.azure:azure-xml:jar:1.2.0:compile
+[INFO] |  |  |  \- com.azure:azure-core-http-netty:jar:1.15.11:compile
+[INFO] |  |  |     +- io.netty:netty-handler-proxy:jar:4.1.119.Final:compile
+[INFO] |  |  |     |  \- io.netty:netty-codec-socks:jar:4.1.119.Final:compile
+[INFO] |  |  |     +- io.netty:netty-transport-native-unix-common:jar:4.1.119.Final:compile
+[INFO] |  |  |     +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.119.Final:compile
+[INFO] |  |  |     |  \- io.netty:netty-transport-classes-epoll:jar:4.1.119.Final:compile
+[INFO] |  |  |     +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.119.Final:compile
+[INFO] |  |  |     |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.119.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:2.0.70.Final:compile
+[INFO] |  |  |     |  +- io.netty:netty-tcnative-classes:jar:2.0.70.Final:compile
+[INFO] |  |  |     |  +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.70.Final:compile
+[INFO] |  |  |     |  +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.70.Final:compile
+[INFO] |  |  |     |  +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.70.Final:compile
+[INFO] |  |  |     |  +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.70.Final:compile
+[INFO] |  |  |     |  \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.70.Final:compile
+[INFO] |  |  |     \- io.projectreactor.netty:reactor-netty-http:jar:1.2.5:compile
+[INFO] |  |  |        +- io.netty:netty-resolver-dns:jar:4.1.119.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-dns:jar:4.1.119.Final:compile
+[INFO] |  |  |        +- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.119.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.119.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty-core:jar:1.2.5:compile
+[INFO] |  |  \- io.netty:netty-codec-http2:jar:4.1.119.Final:compile
+[INFO] |  |     +- io.netty:netty-common:jar:4.1.119.Final:compile
+[INFO] |  |     +- io.netty:netty-buffer:jar:4.1.119.Final:compile
+[INFO] |  |     +- io.netty:netty-transport:jar:4.1.119.Final:compile
+[INFO] |  |     |  \- io.netty:netty-resolver:jar:4.1.119.Final:compile
+[INFO] |  |     +- io.netty:netty-codec:jar:4.1.119.Final:compile
+[INFO] |  |     +- io.netty:netty-handler:jar:4.1.119.Final:compile
+[INFO] |  |     \- io.netty:netty-codec-http:jar:4.1.119.Final:compile
+[INFO] |  \- dev.langchain4j:langchain4j-ollama:jar:1.11.0:compile
+[INFO] +- dev.langchain4j:langchain4j:jar:1.10.0:compile
+[INFO] |  +- dev.langchain4j:langchain4j-core:jar:1.10.0:compile
+[INFO] |  |  \- org.jspecify:jspecify:jar:1.0.0:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.18.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.18.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.18.3:compile
+[INFO] |  \- org.apache.opennlp:opennlp-tools:jar:2.5.4:compile
+[INFO] +- dev.langchain4j:langchain4j-mcp:jar:1.10.0-beta18:compile
+[INFO] |  +- com.squareup.okhttp3:okhttp:jar:4.12.0:compile
+[INFO] |  |  +- com.squareup.okio:okio:jar:3.6.0:compile
+[INFO] |  |  |  \- com.squareup.okio:okio-jvm:jar:3.6.0:compile
+[INFO] |  |  |     \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.9.25:compile
+[INFO] |  |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.9.25:compile
+[INFO] |  |     +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.9.25:compile
+[INFO] |  |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.9.25:compile
+[INFO] |  +- com.squareup.okhttp3:okhttp-sse:jar:4.12.0:compile
+[INFO] |  +- dev.langchain4j:langchain4j-http-client:jar:1.10.0:compile
+[INFO] |  \- dev.langchain4j:langchain4j-http-client-jdk:jar:1.10.0:runtime
+[INFO] +- org.springframework.ai:spring-ai-bom:pom:1.1.0:import
+[INFO] +- org.bsc.langgraph4j:langgraph4j-studio-springboot:jar:1.8.0-beta5:compile
+[INFO] |  \- org.bsc.langgraph4j:langgraph4j-studio:jar:1.8.0-beta5:compile
+[INFO] +- io.javelit:javelit:jar:0.74.0:test
+[INFO] |  +- com.google.guava:guava:jar:33.5.0-jre:test
+[INFO] |  |  +- com.google.guava:failureaccess:jar:1.0.3:test
+[INFO] |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:test
+[INFO] |  |  +- com.google.errorprone:error_prone_annotations:jar:2.41.0:test
+[INFO] |  |  \- com.google.j2objc:j2objc-annotations:jar:3.1:test
+[INFO] |  +- io.undertow:undertow-core:jar:2.3.18.Final:test
+[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.6.1.Final:test
+[INFO] |  |  +- org.jboss.xnio:xnio-api:jar:3.8.16.Final:test
+[INFO] |  |  |  +- org.wildfly.common:wildfly-common:jar:1.5.4.Final:test
+[INFO] |  |  |  \- org.wildfly.client:wildfly-client-config:jar:1.0.1.Final:test
+[INFO] |  |  +- org.jboss.xnio:xnio-nio:jar:3.8.16.Final:test
+[INFO] |  |  \- org.jboss.threads:jboss-threads:jar:3.5.0.Final:test
+[INFO] |  +- io.undertow:undertow-servlet:jar:2.3.18.Final:test
+[INFO] |  |  \- jakarta.servlet:jakarta.servlet-api:jar:6.0.0:test
+[INFO] |  +- io.undertow:undertow-websockets-jsr:jar:2.3.18.Final:test
+[INFO] |  |  +- jakarta.websocket:jakarta.websocket-api:jar:2.1.1:test
+[INFO] |  |  \- jakarta.websocket:jakarta.websocket-client-api:jar:2.1.1:test
+[INFO] |  +- io.methvin:directory-watcher:jar:0.19.1:test
+[INFO] |  |  \- net.java.dev.jna:jna:jar:5.16.0:test
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.18.3:compile
+[INFO] |  +- org.apache.commons:commons-lang3:jar:3.17.0:test
+[INFO] |  +- dev.jbang:jbang-cli:jar:0.127.18:test
+[INFO] |  |  +- dev.jbang:devkitman:jar:0.1.2:test
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.14:test
+[INFO] |  |  |  |  \- commons-logging:commons-logging:jar:1.2:test
+[INFO] |  |  |  \- org.apache.httpcomponents:httpclient-cache:jar:4.5.14:test
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.11.0:test
+[INFO] |  |  +- org.apache.commons:commons-compress:jar:1.27.1:test
+[INFO] |  |  |  +- commons-codec:commons-codec:jar:1.17.2:test
+[INFO] |  |  |  \- commons-io:commons-io:jar:2.16.1:test
+[INFO] |  |  +- io.quarkus.qute:qute-core:jar:1.13.7.Final:test
+[INFO] |  |  |  \- io.smallrye.reactive:mutiny:jar:0.14.0:test
+[INFO] |  |  |     \- io.smallrye.common:smallrye-common-annotation:jar:1.5.0:test
+[INFO] |  |  +- kr.motd.maven:os-maven-plugin:jar:1.7.1:test
+[INFO] |  |  |  +- org.apache.maven:maven-plugin-api:jar:3.5.3:test
+[INFO] |  |  |  |  +- org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.3:test
+[INFO] |  |  |  |  |  +- javax.enterprise:cdi-api:jar:1.0:test
+[INFO] |  |  |  |  |  |  +- javax.annotation:jsr250-api:jar:1.0:test
+[INFO] |  |  |  |  |  |  \- javax.inject:javax.inject:jar:1:test
+[INFO] |  |  |  |  |  +- org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.3:test
+[INFO] |  |  |  |  |  \- org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:test
+[INFO] |  |  |  |  \- org.codehaus.plexus:plexus-classworlds:jar:2.5.2:test
+[INFO] |  |  |  +- org.codehaus.plexus:plexus-utils:jar:3.1.0:test
+[INFO] |  |  |  \- com.google.code.findbugs:jsr305:jar:3.0.2:test
+[INFO] |  |  +- org.codehaus.plexus:plexus-java:jar:1.2.0:test
+[INFO] |  |  |  +- org.ow2.asm:asm:jar:9.6:test
+[INFO] |  |  |  \- com.thoughtworks.qdox:qdox:jar:2.0.3:test
+[INFO] |  |  +- com.google.code.gson:gson:jar:2.11.0:test
+[INFO] |  |  +- org.jsoup:jsoup:jar:1.17.1:compile
+[INFO] |  |  +- org.codejive:java-properties:jar:0.0.7:test
+[INFO] |  |  +- org.slf4j:slf4j-nop:jar:2.0.17:test
+[INFO] |  |  +- org.slf4j:jcl-over-slf4j:jar:2.0.17:test
+[INFO] |  |  +- org.jboss:jandex:jar:2.2.3.Final:test
+[INFO] |  |  \- eu.maveniverse.maven.mima:context:jar:2.4.20:test
+[INFO] |  +- eu.maveniverse.maven.mima.runtime:standalone-static:jar:2.4.20:test
+[INFO] |  |  +- eu.maveniverse.maven.mima.runtime:standalone-shared:jar:2.4.20:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-api:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-spi:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-util:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-connector-basic:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-named-locks:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-impl:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-transport-file:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-transport-http:jar:1.9.22:test
+[INFO] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.16:test
+[INFO] |  |  +- org.apache.maven.resolver:maven-resolver-supplier:jar:1.9.22:test
+[INFO] |  |  +- org.apache.maven:maven-resolver-provider:jar:3.9.9:test
+[INFO] |  |  |  +- org.apache.maven:maven-model:jar:3.9.9:test
+[INFO] |  |  |  \- org.apache.maven:maven-repository-metadata:jar:3.9.9:test
+[INFO] |  |  +- org.apache.maven:maven-model-builder:jar:3.9.9:test
+[INFO] |  |  |  +- org.codehaus.plexus:plexus-interpolation:jar:1.27:test
+[INFO] |  |  |  +- org.apache.maven:maven-artifact:jar:3.9.9:test
+[INFO] |  |  |  \- org.apache.maven:maven-builder-support:jar:3.9.9:test
+[INFO] |  |  \- org.apache.maven:maven-settings-builder:jar:3.9.9:test
+[INFO] |  |     +- org.apache.maven:maven-settings:jar:3.9.9:test
+[INFO] |  |     \- org.codehaus.plexus:plexus-sec-dispatcher:jar:2.0:test
+[INFO] |  |        \- org.codehaus.plexus:plexus-cipher:jar:2.0:test
+[INFO] |  +- org.codehaus.plexus:plexus-xml:jar:4.1.0:test
+[INFO] |  |  \- org.apache.maven:maven-xml:jar:4.0.0-rc-3:test
+[INFO] |  |     +- org.apache.maven:maven-api-xml:jar:4.0.0-rc-3:test
+[INFO] |  |     |  \- org.apache.maven:maven-api-annotations:jar:4.0.0-rc-3:test
+[INFO] |  |     +- com.fasterxml.woodstox:woodstox-core:jar:7.1.0:test
+[INFO] |  |     \- org.codehaus.woodstox:stax2-api:jar:4.2.2:test
+[INFO] |  +- com.github.spullara.mustache.java:compiler:jar:0.9.14:test
+[INFO] |  +- info.picocli:picocli:jar:4.7.7:test
+[INFO] |  +- com.vladsch.flexmark:flexmark:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-ast:jar:0.64.8:compile
+[INFO] |  |  |  \- org.jetbrains:annotations:jar:24.0.1:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-builder:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-collection:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-data:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-dependency:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-format:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-html:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-misc:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util-sequence:jar:0.64.8:compile
+[INFO] |  |  \- com.vladsch.flexmark:flexmark-util-visitor:jar:0.64.8:compile
+[INFO] |  +- com.vladsch.flexmark:flexmark-ext-emoji:jar:0.64.8:compile
+[INFO] |  |  +- com.vladsch.flexmark:flexmark-util:jar:0.64.8:compile
+[INFO] |  |  |  \- com.vladsch.flexmark:flexmark-util-options:jar:0.64.8:compile
+[INFO] |  |  \- com.vladsch.flexmark:flexmark-jira-converter:jar:0.64.8:compile
+[INFO] |  |     +- com.vladsch.flexmark:flexmark-ext-wikilink:jar:0.64.8:compile
+[INFO] |  |     +- com.vladsch.flexmark:flexmark-ext-ins:jar:0.64.8:compile
+[INFO] |  |     \- com.vladsch.flexmark:flexmark-ext-superscript:jar:0.64.8:compile
+[INFO] |  +- com.vladsch.flexmark:flexmark-ext-tables:jar:0.64.8:compile
+[INFO] |  +- com.vladsch.flexmark:flexmark-ext-gfm-strikethrough:jar:0.64.8:compile
+[INFO] |  +- com.vladsch.flexmark:flexmark-ext-autolink:jar:0.64.8:test
+[INFO] |  |  \- org.nibor.autolink:autolink:jar:0.6.0:test
+[INFO] |  +- net.fellbaum:jemoji:jar:1.7.5:test
+[INFO] |  \- org.icepear.echarts:echarts-java:jar:1.1.0:test
+[INFO] |     \- org.slf4j:slf4j-simple:jar:2.0.17:test
+[INFO] +- org.junit.jupiter:junit-jupiter:jar:5.11.4:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter-api:jar:5.11.4:test
+[INFO] |  |  +- org.opentest4j:opentest4j:jar:1.3.0:test
+[INFO] |  |  +- org.junit.platform:junit-platform-commons:jar:1.11.4:test
+[INFO] |  |  \- org.apiguardian:apiguardian-api:jar:1.1.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter-params:jar:5.11.4:test
+[INFO] |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.11.4:test
+[INFO] |     \- org.junit.platform:junit-platform-engine:jar:1.11.4:test
+[INFO] +- org.springframework.ai:spring-ai-ollama:jar:1.1.0:test
+[INFO] |  +- org.springframework.ai:spring-ai-model:jar:1.1.0:compile
+[INFO] |  |  +- org.springframework.ai:spring-ai-template-st:jar:1.1.0:compile
+[INFO] |  |  |  \- org.antlr:ST4:jar:4.3.4:compile
+[INFO] |  |  |     \- org.antlr:antlr-runtime:jar:3.5.3:compile
+[INFO] |  |  +- org.springframework:spring-messaging:jar:6.2.6:compile
+[INFO] |  |  +- io.projectreactor:reactor-core:jar:3.7.5:compile
+[INFO] |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.4:compile
+[INFO] |  |  +- org.antlr:antlr4-runtime:jar:4.13.1:compile
+[INFO] |  |  +- com.github.victools:jsonschema-module-swagger-2:jar:4.38.0:compile
+[INFO] |  |  \- io.swagger.core.v3:swagger-annotations-jakarta:jar:2.2.30:compile
+[INFO] |  +- org.springframework.ai:spring-ai-retry:jar:1.1.0:test
+[INFO] |  |  \- org.springframework.retry:spring-retry:jar:2.0.11:test
+[INFO] |  \- org.springframework:spring-webflux:jar:6.2.6:test
+[INFO] +- org.springframework.ai:spring-ai-openai:jar:1.1.0:test
+[INFO] |  +- com.github.victools:jsonschema-generator:jar:4.38.0:compile
+[INFO] |  |  \- com.fasterxml:classmate:jar:1.7.0:compile
+[INFO] |  +- com.github.victools:jsonschema-module-jackson:jar:4.38.0:compile
+[INFO] |  \- org.springframework:spring-context-support:jar:6.2.6:test
+[INFO] \- org.projectlombok:lombok:jar:1.18.42:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.005 s
+[INFO] Finished at: 2026-02-10T19:41:43+08:00
+[INFO] ------------------------------------------------------------------------

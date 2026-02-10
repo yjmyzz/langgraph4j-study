@@ -36,15 +36,13 @@ public class ConditionalGraphApplication {
     private static final String DEFAULT_TARGET = "2";
 
     public static void main(String[] args) throws GraphStateException {
-
-
         StateGraph<AgentState> conditionalGraph = getConditionalGraph();
 
         System.out.println(conditionalGraph.getGraph(GraphRepresentation.Type.MERMAID, "conditional Graph", true).content());
 
         try {
             conditionalGraph.compile()
-                    .invoke(Map.of("test", "test-init-value", "routeTo", "node-4"))
+                    .invoke(Map.of("test", "test-init-value"))
                     .ifPresent(c -> System.out.println(c.data()));
         } catch (GraphStateException e) {
             System.err.println("Graph execution failed: " + e.getMessage());

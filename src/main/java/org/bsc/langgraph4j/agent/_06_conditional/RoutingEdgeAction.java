@@ -9,7 +9,6 @@ import java.util.Set;
 /**
  * 条件边：根据 state 中的 nextNode 选择下一节点。
  * 仅当返回值在合法节点集合内时才使用，否则回退到默认节点，避免框架因非法 key 抛错。
- *
  * @author junmingyang
  */
 public class RoutingEdgeAction implements EdgeAction<AgentState> {
@@ -29,6 +28,7 @@ public class RoutingEdgeAction implements EdgeAction<AgentState> {
 
     @Override
     public String apply(AgentState state) throws Exception {
+        //根据上1个节点的状态值，执行路由
         System.out.println("current Edge: routing edge");
         String next = resolveNextNode(state);
         if (allowedNodes.contains(next)) {

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /**
  * 条件图专用：根据当前状态决定下一节点（通过 nextNode 供 RoutingEdgeAction 使用）。
- * 若初始状态包含 "routeTo"（值为 "node-2"|"node-3"|"node-4"）则使用该路由，否则默认 "node-2"。
  *
  * @author junmingyang
  */

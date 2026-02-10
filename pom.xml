@@ -3,12 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--    <parent>-->
-    <!--        <groupId>org.bsc.langgraph4j</groupId>-->
-    <!--        <artifactId>langgraph4j-parent</artifactId>-->
-    <!--        <version>1.7-SNAPSHOT</version>-->
-    <!--    </parent>-->
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -16,10 +10,8 @@
         <relativePath/>
     </parent>
 
-    <artifactId>langgraph4j-agent-qa</artifactId>
+    <artifactId>langgraph4j-study</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name><![CDATA[langgraph4j::examples::agent-q&a]]></name>
-    <description><![CDATA[Langgraph4j Question & Answer Agent example]]></description>
 
     <properties>
         <langgraph4j.version>1.8.1</langgraph4j.version>
@@ -63,7 +55,7 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-mcp</artifactId>
-            <version>1.10.0-beta18</version>
+            <version>1.11.0-beta19</version>
         </dependency>
 
         <!--spring-ai-->
@@ -79,7 +71,7 @@
         <dependency>
             <groupId>org.bsc.langgraph4j</groupId>
             <artifactId>langgraph4j-studio-springboot</artifactId>
-            <version>1.8.0-beta5</version>
+            <version>1.8.1</version>
         </dependency>
 
 
@@ -125,22 +117,22 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.bsc.langgraph4j.agent._01_basic.LG4jQAAgentApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <release>21</release>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>sonatype-central</id>-->
-    <!--            <name>sonatype snapshots</name>-->
-    <!--            <url>https://central.sonatype.com/repository/maven-snapshots/</url>-->
-    <!--            <snapshots>-->
-    <!--                <enabled>true</enabled>-->
-    <!--            </snapshots>-->
-    <!--            <releases>-->
-    <!--                <enabled>false</enabled>-->
-    <!--            </releases>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
 
 </project>

@@ -83,7 +83,7 @@ public class HookSampleApplication {
 
         });
 
-        out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "Conditional Graph with hook", true).content());
+        out.println(sequenceGraph.getGraph(GraphRepresentation.Type.MERMAID, "NodeHook Graph", true).content());
 
         sequenceGraph.compile().invoke(Map.of("test", "test-init-value")).ifPresent(c -> {
             System.out.println(c.data());
@@ -130,7 +130,7 @@ public class HookSampleApplication {
             });
         });
 
-        out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "Sequence Graph with hook", true).content());
+        out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "NodeHook And EdgeHook Graph", true).content());
 
         graph.compile().invoke(Map.of("test", "test-init-value")).ifPresent(c -> System.out.println(c.data()));
     }

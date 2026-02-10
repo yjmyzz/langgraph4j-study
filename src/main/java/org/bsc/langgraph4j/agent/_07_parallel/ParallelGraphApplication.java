@@ -5,8 +5,7 @@ import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.state.AgentState;
 
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.bsc.langgraph4j.GraphDefinition.START;
@@ -32,47 +31,59 @@ public class ParallelGraphApplication {
 
 
     public static void main(String[] args) throws GraphStateException {
-        StateGraph<AgentState> conditionalGraph1 = getParallelGraph();
 
-        System.out.println(conditionalGraph1.getGraph(GraphRepresentation.Type.MERMAID, "parallel Graph", true).content());
+        StateGraph<AgentState> graphWithThreadPool = getParallelGraph();
+        System.out.println(graphWithThreadPool.getGraph(GraphRepresentation.Type.MERMAID, "parallel Graph", true).content());
 
-        long start = System.currentTimeMillis();
-        try {
-            RunnableConfig rc = RunnableConfig.builder()
-                    .addParallelNodeExecutor("node-1", Executors.newFixedThreadPool(4))
-                    .build();
-            conditionalGraph1.compile()
-                    .invoke(Map.of("test", "test-init-value"), rc)
-                    .ifPresent(c -> System.out.println(c.data()));
-        } catch (GraphStateException e) {
-            System.err.println("Graph execution failed: " + e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            throw new RuntimeException(e);
-        } finally {
-            long end = System.currentTimeMillis();
-            System.out.println((end - start) + "ms");
-        }
+        graphWithThreadPool.compile()
+                .invoke(Map.of("test", "test-init-value"))
+                .ifPresent(c -> {
+                    long start = (long) c.data().getOrDefault("start", 0L);
+                    System.out.println(c.data());
+                    long end = System.currentTimeMillis();
+                    System.out.println((end - start) + "ms");
+                });
+
 
         System.out.println(Strings.repeat("=", 50));
 
-        StateGraph<AgentState> conditionalGraph2 = getParallelGraph();
-        start = System.currentTimeMillis();
-        try {
-            conditionalGraph2.compile()
-                    .invoke(Map.of("test", "test-init-value"))
-                    .ifPresent(c -> System.out.println(c.data()));
-        } catch (GraphStateException e) {
-            System.err.println("Graph execution failed: " + e.getMessage());
-            throw e;
-        } catch (Exception e) {
-            System.err.println("Unexpected error: " + e.getMessage());
-            throw new RuntimeException(e);
-        } finally {
-            long end = System.currentTimeMillis();
-            System.out.println((end - start) + "ms");
-        }
+        StateGraph<AgentState> graphNoThreadPool = getParallelGraph();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        RunnableConfig rc = RunnableConfig.builder()
+                //从node-1开始并行执行node-2和node-3（使用线程池）
+                .addParallelNodeExecutor("node-1", executorService)
+                .build();
+        graphNoThreadPool.compile()
+                .invoke(Map.of("test", "test-init-value"), rc)
+                .ifPresent(c -> {
+                    long start = (long) c.data().getOrDefault("start", 0L);
+                    System.out.println(c.data());
+                    //记得关闭线程池
+                    executorService.shutdown();
+                    long end = System.currentTimeMillis();
+                    System.out.println((end - start) + "ms");
+
+                });
+
+        System.out.println(Strings.repeat("=", 50));
+
+        StateGraph<AgentState> graphNoThreadPool2 = getParallelGraph();
+
+        ExecutorService virtualThreadPerTaskExecutor = Executors.newVirtualThreadPerTaskExecutor();
+        RunnableConfig rc2 = RunnableConfig.builder()
+                //从node-1开始并行执行node-2和node-3（使用线程池）
+                .addParallelNodeExecutor("node-1", virtualThreadPerTaskExecutor)
+                .build();
+        graphNoThreadPool2.compile()
+                .invoke(Map.of("test", "test-init-value"), rc2)
+                .ifPresent(c -> {
+                    long start = (long) c.data().getOrDefault("start", 0L);
+                    System.out.println(c.data());
+                    long end = System.currentTimeMillis();
+                    System.out.println((end - start) + "ms");
+                });
+
     }
 
     public static StateGraph<AgentState> getParallelGraph() throws GraphStateException {

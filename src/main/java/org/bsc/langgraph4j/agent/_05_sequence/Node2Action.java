@@ -5,6 +5,9 @@ import org.bsc.langgraph4j.state.AgentState;
 
 import java.util.Map;
 
+/**
+ * @author junmingyang
+ */
 public class Node2Action implements NodeAction<AgentState> {
     @Override
     public Map<String, Object> apply(AgentState state) throws Exception {

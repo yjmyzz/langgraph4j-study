@@ -17,7 +17,7 @@ import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
  */
 
 /**
- * 演示人机交互循环的LangGraph4j应用程序
+ * 演示"人机协助"
  * <p>
  * 该应用构建了一个包含人类决策节点的循环图结构：
  * - node-1: 执行主要业务逻辑

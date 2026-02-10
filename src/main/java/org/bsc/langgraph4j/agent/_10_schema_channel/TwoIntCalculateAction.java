@@ -2,6 +2,7 @@ package org.bsc.langgraph4j.agent._10_schema_channel;
 
 import org.bsc.langgraph4j.action.NodeAction;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,9 @@ public class TwoIntCalculateAction implements NodeAction<TwoIntCalculateState> {
 
     private final String inputPrefix;
     private final String resultKey;
-    /** 若非空，将本节点计算结果同时写入该 key，供下一节点使用（如 op2_num1 = result_1） */
+    /**
+     * 若非空，将本节点计算结果同时写入该 key，供下一节点使用（如 op2_num1 = result_1）
+     */
     private final String forwardResultToKey;
 
     /**
@@ -54,7 +57,8 @@ public class TwoIntCalculateAction implements NodeAction<TwoIntCalculateState> {
         String operator = state.operator(inputPrefix);
         int num1 = state.num1(inputPrefix);
         int num2 = state.num2(inputPrefix);
-        if ("+".equals(operator) || "-".equals(operator) || "*".equals(operator) || "/".equals(operator)) {
+        List<String> allowOperators = List.of("+", "-", "*", "/");
+        if (allowOperators.contains(operator)) {
             int result = switch (operator) {
                 case "+" -> num1 + num2;
                 case "-" -> num1 - num2;

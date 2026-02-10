@@ -1,6 +1,6 @@
 # Langgraph4j Agent 示例项目
 
-基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Schema Channel 两步运算、**图执行 Hook（Node/Edge）**、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
+基于 [Langgraph4j](https://github.com/bsorrentino/langgraph4j) 与 Spring Boot 的智能体（Agent）示例工程，涵盖顺序图、条件分支、并行、循环、人机循环（HITL）、子图中断、Schema Channel（两步运算与订单状态图）、**图执行 Hook（Node/Edge）**、Spring AI 多 Agent 交接与 Langchain4j 多 Agent 交接等场景。
 
 ## 技术栈
 
@@ -64,10 +64,14 @@ src/main/java/org/bsc/langgraph4j/agent/
 │   ├── HumanInLoopGraphApplication.java
 │   ├── Node1Action.java
 │   └── Node2Action.java
-├── _10_schema_channel/           # Schema Channel：两步运算、步骤间结果串联
-│   ├── TwoIntCalculateGraphApplication.java
+├── _10_schema_channel/           # Schema Channel：两步运算、订单状态图（Schema/Channel/Reducer）
+│   ├── TwoIntCalculateGraphApplication.java   # 两步运算入口
 │   ├── TwoIntCalculateState.java
-│   └── TwoIntCalculateAction.java
+│   ├── TwoIntCalculateAction.java
+│   ├── SampleOrderGraphApplication.java      # 订单图入口（change-price → change-amount）
+│   ├── OrderState.java                       # 订单状态（Schema + Channel 策略）
+│   ├── ChangePriceNode.java                  # 改价节点
+│   └── ChangeAmountNode.java                 # 改数量节点
 └── _11_hook/                     # 图执行 Hook（Node / Edge）
     ├── HookSampleApplication.java   # Node Hook 与 Edge Hook 触发时机演示
     ├── Node1Action.java
@@ -194,7 +198,7 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 
 ---
 
-### 9. 人机循环（`_09_human_in_loop`）
+### 9. 人机协同（`_09_human_in_loop`）
 
 演示**人机协作循环**：流程与 _08_loop 类似，但在 node-1 执行完后由**控制台人工输入**决定下一步：
 
@@ -207,13 +211,23 @@ mvn spring-boot:run -Dspring.profiles.active=studio
 
 ---
 
-### 10. Schema Channel 两步运算（`_10_schema_channel`）
+### 10. Schema Channel（`_10_schema_channel`）
 
-演示基于 **Schema / Channel** 的状态设计：固定流程为两步运算（先 op1，再 op2），**第二步的 num1 由第一步的计算结果自动填入**，实现节点间结果串联。
+演示基于 **Schema / Channel** 的状态设计，包含两类示例：
+
+**（1）两步运算**  
+固定流程为两步运算（先 op1，再 op2），**第二步的 num1 由第一步的计算结果自动填入**，实现节点间结果串联。
 
 - **状态**：`TwoIntCalculateState` 定义两槽位（op1、op2）的 num1/num2/operator 及 result_1、result_2；支持在 invoke 前一次性传入所有参数（第一步完整入参，第二步仅需 num2 与 operator）。
 - **节点**：`TwoIntCalculateAction` 通用四则运算，通过 `inputPrefix`、`resultKey` 绑定槽位；可选 `forwardResultToKey` 将本步结果写入下一节点输入（如将 result_1 写入 op2_num1）。
 - **入口**：`TwoIntCalculateGraphApplication#main`（示例：第一步 3*6，第二步结果/2，即 18/2=9）。
+
+**（2）订单状态图**  
+使用 **Schema 构建 StateGraph**，通过 Channel 与 Reducer 定义字段更新策略（如价格取最低、备注追加）。
+
+- **状态**：`OrderState` 使用 `OrderState.SCHEMA` 定义 orderId、amount、price、total、orderDate、remark；`Channels.base()` / `Channels.appender()` 及自定义 Reducer（如 `min` 取最低价）。
+- **图结构**：`START → change-price → change-amount → END`；节点 `ChangePriceNode`、`ChangeAmountNode` 分别更新价格与数量并计算 total。
+- **入口**：`SampleOrderGraphApplication#main`。
 
 ---
 
@@ -267,7 +281,7 @@ mvn clean package
 - 并行图：`ParallelGraphApplication`
 - 循环图：`LoopGraphApplication`
 - 人机循环：`HumanInLoopGraphApplication`（需在带控制台环境运行，输入 C/Q）
-- Schema Channel 两步运算：`TwoIntCalculateGraphApplication`
+- Schema Channel：`TwoIntCalculateGraphApplication`（两步运算）、`SampleOrderGraphApplication`（订单状态图）
 - 图执行 Hook：`HookSampleApplication`（演示 Node/Edge Hook 触发时机，含静态边与条件边两段）
 
 ### 配置说明
