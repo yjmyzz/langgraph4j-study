@@ -1,10 +1,9 @@
 package org.bsc.langgraph4j.agent._09_human_in_loop;
 
-import org.bsc.langgraph4j.GraphDefinition;
-import org.bsc.langgraph4j.GraphRepresentation;
-import org.bsc.langgraph4j.GraphStateException;
-import org.bsc.langgraph4j.StateGraph;
+import org.bsc.langgraph4j.*;
+import org.bsc.langgraph4j.checkpoint.MemorySaver;
 import org.bsc.langgraph4j.state.AgentState;
+import org.bsc.langgraph4j.state.StateSnapshot;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -12,38 +11,39 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.bsc.langgraph4j.action.AsyncNodeAction.node_async;
 
-/**
- * @author junmingyang
- */
 
-/**
- * 演示"人机协助"
- * <p>
- * 该应用构建了一个包含人类决策节点的循环图结构：
- * - node-1: 执行主要业务逻辑
- * - node-2: 执行辅助处理逻辑
- * - 人类决策点: 用户可选择继续循环(C)或退出(Q)
- * <p>
- * 程序流程：
- * START -> node-1 -> [人工决策] -> node-2 -> node-1 -> [人工决策] -> END
- *
- * @author 菩提树下的杨过(yjmyzz.cnblogs.com)
- */
-public class HumanInLoopGraphApplication {
+public class HumanInLoopGraph2Application {
 
     private static final String LOOP_COUNT_KEY = "loopCount";
-
-    /**
-     * 共享 Scanner，不关闭以免关闭 System.in导致后续无法读取
-     */
     private static final Scanner CONSOLE_SCANNER = new Scanner(System.in);
 
-    public static void main(String[] args) throws GraphStateException {
+    public static void main(String[] args) throws Exception {
         StateGraph<AgentState> graph = getLoopGraph();
+
         System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "human-in-loop Graph", true).content());
-        graph.compile().invoke(Map.of()).ifPresent(c -> {
+
+        CompileConfig compileConfig = CompileConfig.builder()
+                .interruptBefore("node-2")
+                .checkpointSaver(new MemorySaver())
+                .build();
+
+        RunnableConfig runnableConfig = RunnableConfig.builder()
+                .threadId("thread-1")
+                .build();
+
+        CompiledGraph<AgentState> workflow = graph.compile(compileConfig);
+        workflow.invoke(Map.of(), runnableConfig).ifPresent(c -> {
             System.out.println(c.data());
         });
+
+        StateSnapshot<AgentState> snapshot = workflow.getState(runnableConfig);
+        if (snapshot != null) {
+            RunnableConfig updateConfig = workflow.updateState(runnableConfig,
+                    Map.of("loopCount", snapshot.state().value("loopCount").orElse(0)), null);
+            for (var event : workflow.stream(GraphInput.resume(), updateConfig)) {
+                System.out.println(event.node());
+            }
+        }
     }
 
     public static StateGraph<AgentState> getLoopGraph() throws GraphStateException {
@@ -60,17 +60,14 @@ public class HumanInLoopGraphApplication {
                 }))
                 .addEdge(GraphDefinition.START, "node-1")
                 .addEdge("node-2", "node-1")
-                .addConditionalEdges("node-1", state -> CompletableFuture.supplyAsync(HumanInLoopGraphApplication::waitForHumanDecision),
+                .addConditionalEdges("node-1", state -> CompletableFuture.supplyAsync(HumanInLoopGraph2Application::waitForHumanDecision),
                         Map.of(
                                 "exit", GraphDefinition.END,
                                 "next", "node-2",
                                 "back", "node-1"));
     }
 
-    /**
-     * 控制台等待用户输入：C(Continue) 进入 node-2，Q(Quit) 结束到 END。
-     * 使用共享 CONSOLE_SCANNER，不能关闭否则会关闭 System.in 导致下次 No line found。
-     */
+
     private static String waitForHumanDecision() {
         while (true) {
             System.out.print("请输入 N(next) 继续到 node-2，B(back) 退回到 node-1，或 Q(Quit) 结束 [N/B/Q]: ");
