@@ -1,9 +1,7 @@
 package org.bsc.langgraph4j.agent._09_human_in_loop;
 
-import org.bsc.langgraph4j.GraphDefinition;
-import org.bsc.langgraph4j.GraphRepresentation;
-import org.bsc.langgraph4j.GraphStateException;
-import org.bsc.langgraph4j.StateGraph;
+import org.bsc.async.AsyncGenerator;
+import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.state.AgentState;
 
 import java.util.Map;
@@ -41,23 +39,16 @@ public class HumanInLoopGraphApplication {
     public static void main(String[] args) throws GraphStateException {
         StateGraph<AgentState> graph = getLoopGraph();
         System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "human-in-loop Graph", true).content());
-        graph.compile().invoke(Map.of()).ifPresent(c -> {
-            System.out.println(c.data());
-        });
+        AsyncGenerator<NodeOutput<AgentState>> stream = graph.compile().stream(Map.of());
+        for (NodeOutput<AgentState> output : stream) {
+            System.out.println(output.node() + "->" + output.state().value(LOOP_COUNT_KEY).orElse(0));
+        }
     }
 
     public static StateGraph<AgentState> getLoopGraph() throws GraphStateException {
         return new StateGraph<>(AgentState::new)
-                .addNode("node-1", node_async(state -> {
-                    int loopCount = (int) state.value(LOOP_COUNT_KEY).orElse(0);
-                    System.out.println("node-1: loopCount = " + loopCount);
-                    return Map.of(LOOP_COUNT_KEY, loopCount + 1);
-                }))
-                .addNode("node-2", node_async(state -> {
-                    int loopCount = (int) state.value(LOOP_COUNT_KEY).orElse(0);
-                    System.out.println("node-2: loopCount = " + loopCount);
-                    return Map.of();
-                }))
+                .addNode("node-1", node_async(state -> Map.of(LOOP_COUNT_KEY, (int) state.value(LOOP_COUNT_KEY).orElse(0) + 1)))
+                .addNode("node-2", node_async(state -> Map.of()))
                 .addEdge(GraphDefinition.START, "node-1")
                 .addEdge("node-2", "node-1")
                 .addConditionalEdges("node-1", state -> CompletableFuture.supplyAsync(HumanInLoopGraphApplication::waitForHumanDecision),
