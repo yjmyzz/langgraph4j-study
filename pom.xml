@@ -57,6 +57,12 @@
             <version>${langgraph4j.version}</version>
         </dependency>
 
+        <!-- Gson: required by langgraph4j GsonStateSerializer (e.g. checkpoint FileSystemSaver) -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
+
         <!--langchain4j-->
         <dependency>
             <groupId>dev.langchain4j</groupId>

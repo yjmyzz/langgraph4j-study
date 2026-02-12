@@ -3,10 +3,7 @@ package org.bsc.langgraph4j.agent._13_checkpoint;
 import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.checkpoint.BaseCheckpointSaver;
 import org.bsc.langgraph4j.checkpoint.FileSystemSaver;
-import org.bsc.langgraph4j.langchain4j.serializer.jackson.LC4jJacksonStateSerializer;
-import org.bsc.langgraph4j.langchain4j.serializer.std.LC4jStateSerializer;
 import org.bsc.langgraph4j.prebuilt.MessagesState;
-import org.bsc.langgraph4j.serializer.plain_text.PlainTextStateSerializer;
 import org.bsc.langgraph4j.state.StateSnapshot;
 
 import java.nio.file.Path;
@@ -24,38 +21,30 @@ public class CheckPointApplication {
 
 
     public static void main(String[] args) throws Exception {
-        clearCheckpoint();
+        startWithoutCheckpoint();
+        out.println("\n------------------------\n");
 
+        BaseCheckpointSaver saver = getSaver();
+        startWithCheckpoint(saver);
+        out.println("\n------------------------\n");
+
+        recoverFromCheckpoint(saver);
+    }
+
+
+    static BaseCheckpointSaver getSaver() {
+//        return new MemorySaver();
+        return new FileSystemSaver(Path.of("output"), new GsonMessagesStateSerializer());
+    }
+
+    static void startWithoutCheckpoint() throws Exception {
         StateGraph<MessagesState<String>> graph = getGraph();
-        System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "CheckPoint Graph", true).content());
 
         graph.addBeforeCallNodeHook((String node, MessagesState<String> data, RunnableConfig config) -> {
             out.println("Before calling node: " + node + ", data: " + data.data());
             return CompletableFuture.completedFuture(data.data());
         });
 
-//        startWithoutCheckpoint(graph);
-//        System.out.println("------------------------");
-//        startWithCheckpoint(graph);
-//        System.out.println("------------------------");
-        recoverFromCheckpoint(graph);
-    }
-
-
-    static void clearCheckpoint() throws Exception {
-        BaseCheckpointSaver saver = getSaver();
-        RunnableConfig rc = RunnableConfig.builder()
-                .threadId("test-interrupt")
-                .build();
-        saver.release(rc);
-    }
-
-    static BaseCheckpointSaver getSaver() {
-//        return new FileSystemSaver(Path.of("output"), new LC4jStateSerializer<>(MessagesState::new));
-        return new FileSystemSaver(Path.of("output"), new LC4jStateSerializer<>(MessagesState::new));
-    }
-
-    static void startWithoutCheckpoint(StateGraph<MessagesState<String>> graph) throws Exception {
         //node-3进入前，被打断
         CompileConfig cc = CompileConfig.builder()
                 .interruptBefore("node-3")
@@ -74,10 +63,15 @@ public class CheckPointApplication {
 
     }
 
-    static void startWithCheckpoint(StateGraph<MessagesState<String>> graph) throws Exception {
+    static void startWithCheckpoint(BaseCheckpointSaver saver) throws Exception {
+        StateGraph<MessagesState<String>> graph = getGraph();
+
+        graph.addBeforeCallNodeHook((String node, MessagesState<String> data, RunnableConfig config) -> {
+            out.println("Before calling node: " + node + ", data: " + data.data());
+            return CompletableFuture.completedFuture(data.data());
+        });
+
         //node-3进入前，被打断
-//        BaseCheckpointSaver saver = new MemorySaver();
-        BaseCheckpointSaver saver = getSaver();
         CompileConfig cc = CompileConfig.builder()
                 .checkpointSaver(saver)
                 .interruptBefore("node-3")
@@ -90,22 +84,15 @@ public class CheckPointApplication {
         //运行完后，最终只会输出[have a] - node-3被打断，执行中止
         workflow.invoke(Map.of(), rc)
                 .ifPresent(state -> System.out.println(state.value(MESSAGES_STATE).orElse(null)));
-
-//        //取出interrupt前的状态快照
-//        StateSnapshot<MessagesState<String>> snapshot = workflow.getState(rc);
-//        System.out.println("snapshot=>" + snapshot.state().data());
-//
-//        //将图的状态，更新到interrupt前的状态快照
-//        RunnableConfig runnableConfig = workflow.updateState(rc, snapshot.state().data());
-//
-//        //从断点恢复运行
-//        workflow.invoke(GraphInput.resume(), runnableConfig)
-//                .ifPresent(state -> System.out.println(state.value(MESSAGES_STATE).orElse(null)));
-
     }
 
-    static void recoverFromCheckpoint(StateGraph<MessagesState<String>> graph) throws Exception {
-        BaseCheckpointSaver saver = getSaver();
+    static void recoverFromCheckpoint(BaseCheckpointSaver saver) throws Exception {
+        StateGraph<MessagesState<String>> graph = getGraph();
+        graph.addBeforeCallNodeHook((String node, MessagesState<String> data, RunnableConfig config) -> {
+            out.println("Before calling node: " + node + ", data: " + data.data());
+            return CompletableFuture.completedFuture(data.data());
+        });
+
         CompileConfig cc = CompileConfig.builder()
                 .checkpointSaver(saver)
                 .interruptBefore("node-3")
