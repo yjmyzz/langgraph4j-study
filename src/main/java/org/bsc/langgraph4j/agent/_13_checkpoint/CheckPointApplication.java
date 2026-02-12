@@ -2,7 +2,6 @@ package org.bsc.langgraph4j.agent._13_checkpoint;
 
 import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.checkpoint.BaseCheckpointSaver;
-import org.bsc.langgraph4j.checkpoint.FileSystemSaver;
 import org.bsc.langgraph4j.prebuilt.MessagesState;
 import org.bsc.langgraph4j.state.StateSnapshot;
 
@@ -34,7 +33,8 @@ public class CheckPointApplication {
 
     static BaseCheckpointSaver getSaver() {
 //        return new MemorySaver();
-        return new FileSystemSaver(Path.of("output"), new GsonMessagesStateSerializer());
+//        return new FileSystemSaver(Path.of("output"), new GsonMessagesStateSerializer());
+        return new JsonFileSystemSaver(Path.of("output"));
     }
 
     static void startWithoutCheckpoint() throws Exception {
