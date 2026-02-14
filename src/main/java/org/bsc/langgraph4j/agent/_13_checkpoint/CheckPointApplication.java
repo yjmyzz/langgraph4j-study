@@ -2,7 +2,10 @@ package org.bsc.langgraph4j.agent._13_checkpoint;
 
 import org.bsc.langgraph4j.*;
 import org.bsc.langgraph4j.checkpoint.BaseCheckpointSaver;
+import org.bsc.langgraph4j.checkpoint.FileSystemSaver;
+import org.bsc.langgraph4j.checkpoint.MemorySaver;
 import org.bsc.langgraph4j.prebuilt.MessagesState;
+import org.bsc.langgraph4j.serializer.std.ObjectStreamStateSerializer;
 import org.bsc.langgraph4j.state.StateSnapshot;
 
 import java.nio.file.Path;
@@ -31,14 +34,14 @@ public class CheckPointApplication {
     }
 
 
-    static BaseCheckpointSaver getSaver() {
-//        return new MemorySaver();
-//        return new FileSystemSaver(Path.of("output"), new GsonMessagesStateSerializer());
-        return new JsonFileSystemSaver(Path.of("output"));
-    }
+
 
     static void startWithoutCheckpoint() throws Exception {
         StateGraph<MessagesState<String>> graph = getGraph();
+
+        //打印图的mermaid代码
+        System.out.println(graph.getGraph(GraphRepresentation.Type.MERMAID, "Sequence Graph", true).content());
+
 
         graph.addBeforeCallNodeHook((String node, MessagesState<String> data, RunnableConfig config) -> {
             out.println("Before calling node: " + node + ", data: " + data.data());
@@ -59,8 +62,12 @@ public class CheckPointApplication {
         //运行完后，最终只会输出[have a] - node-3被打断，执行中止
         workflow.invoke(Map.of(), rc)
                 .ifPresent(state -> System.out.println(state.value(MESSAGES_STATE).orElse(null)));
+    }
 
-
+    static BaseCheckpointSaver getSaver() {
+        return new MemorySaver();
+//        return new FileSystemSaver(Path.of("output"), new ObjectStreamStateSerializer<>(MessagesState<String>::new));
+//        return new JsonFileSystemSaver(Path.of("output"));
     }
 
     static void startWithCheckpoint(BaseCheckpointSaver saver) throws Exception {
